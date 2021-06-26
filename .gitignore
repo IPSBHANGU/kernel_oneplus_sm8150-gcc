@@ -131,5 +131,3 @@ kernel/configs/android-*.cfg
 #
 Android.bp
 
-# Ignore build out directory
-out
