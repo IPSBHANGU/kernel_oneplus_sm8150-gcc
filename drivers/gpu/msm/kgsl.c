@@ -4787,8 +4787,8 @@ kgsl_get_unmapped_area(struct file *file, unsigned long addr,
 				vma = rb_entry(mm->mm_rb.rb_node, struct vm_area_struct, vm_rb);
 			}
 
-			if (private->pid != current_pid) {
-				current_pid = private->pid;
+			if ((int)(long)private->pid != current_pid) {
+				current_pid = (int)(long)private->pid;
 				kgsl_send_uevent_notify(device, current->group_leader->comm,
 					len, mm->total_vm, largest_gap_cpu, largest_gap_gpu);
 			}
