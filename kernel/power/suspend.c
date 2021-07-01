@@ -612,7 +612,6 @@ static int suspend_enter(suspend_state_t state, bool *wakeup)
 	start_suspend_mon();
 #endif
 
-Enable_irq:
 	arch_suspend_enable_irqs();
 	BUG_ON(irqs_disabled());
 

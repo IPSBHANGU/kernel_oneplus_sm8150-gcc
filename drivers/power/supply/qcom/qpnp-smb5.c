@@ -933,7 +933,7 @@ static int smb5_parse_dt(struct smb5 *chip)
 			rc = PTR_ERR(chg->iio.op_connector_temp_chan);
 			if (rc != -EPROBE_DEFER)
 				dev_err(chg->dev,
-				"op_connector_temp_chan channel unavailable,%ld\n",
+				"op_connector_temp_chan channel unavailable,%d\n",
 				rc);
 			chg->iio.op_connector_temp_chan = NULL;
 			return rc;
@@ -949,7 +949,7 @@ static int smb5_parse_dt(struct smb5 *chip)
 			rc = PTR_ERR(chg->iio.op_skin_therm_chan);
 			if (rc != -EPROBE_DEFER)
 				dev_err(chg->dev,
-				"op_skin_therm_chan channel unavailable,%ld\n",
+				"op_skin_therm_chan channel unavailable,%d\n",
 				rc);
 			chg->iio.op_skin_therm_chan = NULL;
 			return rc;
@@ -1205,7 +1205,10 @@ static int smb5_usb_get_prop(struct power_supply *psy,
 		val->intval = get_client_vote(chg->usb_icl_votable, PD_VOTER);
 		break;
 	case POWER_SUPPLY_PROP_CURRENT_MAX:
-		rc = smblib_get_prop_input_current_max(chg, val);
+		if (chg->dash_on)
+			val->intval = 3000000;
+		else
+			rc = smblib_get_prop_input_current_max(chg, val);
 		break;
 	case POWER_SUPPLY_PROP_TYPE:
 		val->intval = POWER_SUPPLY_TYPE_USB_PD;

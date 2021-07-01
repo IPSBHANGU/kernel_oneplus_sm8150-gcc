@@ -42,7 +42,7 @@ static uint32_t npu_reg_read(void __iomem *base, size_t size, uint32_t off)
 	}
 
 	if (off >= size) {
-		pr_err("offset exceeds io region %x:%x\n", off, size);
+		pr_err("offset exceeds io region %x:%lx\n", off, size);
 		return 0;
 	}
 
@@ -63,7 +63,7 @@ static void npu_reg_write(void __iomem *base, size_t size, uint32_t off,
 	}
 
 	if (off >= size) {
-		pr_err("offset exceeds io region %x:%x\n", off, size);
+		pr_err("offset exceeds io region %x:%lx\n", off, size);
 		return;
 	}
 
@@ -116,7 +116,7 @@ void npu_mem_write(struct npu_device *npu_dev, void *dst, void *src,
 
 	if (dst_off >= npu_dev->tcm_io.size ||
 		(npu_dev->tcm_io.size - dst_off) < size) {
-		pr_err("memory write exceeds io region %x:%x:%x\n",
+		pr_err("memory write exceeds io region %x:%lx:%x\n",
 			dst_off, size, npu_dev->tcm_io.size);
 		return;
 	}
@@ -151,7 +151,7 @@ int32_t npu_mem_read(struct npu_device *npu_dev, void *src, void *dst,
 
 	if (src_off >= npu_dev->tcm_io.size ||
 		(npu_dev->tcm_io.size - src_off) < size) {
-		pr_err("memory read exceeds io region %x:%x:%x\n",
+		pr_err("memory read exceeds io region %x:%lx:%x\n",
 			src_off, size, npu_dev->tcm_io.size);
 		return 0;
 	}

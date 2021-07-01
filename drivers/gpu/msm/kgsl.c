@@ -4787,8 +4787,8 @@ kgsl_get_unmapped_area(struct file *file, unsigned long addr,
 				vma = rb_entry(mm->mm_rb.rb_node, struct vm_area_struct, vm_rb);
 			}
 
-			if (private->pid != current_pid) {
-				current_pid = private->pid;
+			if ((int)(long)private->pid != current_pid) {
+				current_pid = (int)(long)private->pid;
 				kgsl_send_uevent_notify(device, current->group_leader->comm,
 					len, mm->total_vm, largest_gap_cpu, largest_gap_gpu);
 			}
@@ -5066,8 +5066,8 @@ int kgsl_device_platform_probe(struct kgsl_device *device)
 	}
 
 	status = devm_request_irq(device->dev, device->pwrctrl.interrupt_num,
-				  kgsl_irq_handler, IRQF_TRIGGER_HIGH,
-				  device->name, device);
+				  kgsl_irq_handler, IRQF_TRIGGER_HIGH |
+				  IRQF_PERF_AFFINE, device->name, device);
 	if (status) {
 		KGSL_DRV_ERR(device, "request_irq(%d) failed: %d\n",
 			      device->pwrctrl.interrupt_num, status);
